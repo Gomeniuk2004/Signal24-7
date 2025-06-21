@@ -1,5 +1,7 @@
 import logging
 import os
+from flask import Flask
+from threading import Thread
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import (
     ApplicationBuilder,
@@ -11,6 +13,18 @@ import yfinance as yf
 import matplotlib.pyplot as plt
 import ta
 import datetime
+
+# Flask для підтримки веб-серверу (щоб Render не засинав)
+app_web = Flask('')
+
+@app_web.route('/')
+def home():
+    return "Бот працює"
+
+def run():
+    app_web.run(host='0.0.0.0', port=8080)
+
+Thread(target=run).start()
 
 TOKEN = os.getenv("BOT_TOKEN", "8091244631:AAHZRqn2bY3Ow2zH2WNk0J92mar6D0MgfLw")
 chat_id = 992940966
@@ -48,10 +62,8 @@ def analyze_signal(data):
 
     signal = "Очікуйте"
 
-    # Купити
     if current_rsi < 30 and current_price < current_lower and current_price > current_ema:
         signal = "💚 Купити"
-    # Продати
     elif current_rsi > 70 and current_price > current_upper and current_price < current_ema:
         signal = "❤️ Продати"
 
