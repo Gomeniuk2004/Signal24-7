@@ -145,10 +145,4 @@ async def history_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             msg += f"{h['timestamp']} | {h['pair']} ({h['tf']}) — {h['signal']}\n"
         await update.message.reply_text(msg)
 
-if __name__ == "__main__":
-    app = ApplicationBuilder().token(TOKEN).build()
-    app.add_handler(CommandHandler("start", start))
-    app.add_handler(CommandHandler("history", history_handler))
-    app.add_handler(CallbackQueryHandler(button_handler))
-    logging.info("Бот запущено")
-    app.run_polling()
+Bot запущено
